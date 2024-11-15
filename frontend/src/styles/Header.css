@@ -1,0 +1,34 @@
+/* Header.css */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #007bff; /* Example background color */
+  color: white;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  height: 100px; /* Logo size */
+  margin-right: 10px; /* Space between logo and text */
+}
+
+.logo h1 {
+  font-size: 1.5rem; /* Adjust header text size */
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .logo img {
+    height: 80px; /* Smaller logo size on smaller screens */
+  }
+
+  .logo h1 {
+    font-size: 1.2rem; /* Adjust font size on smaller screens */
+  }
+}

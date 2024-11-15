@@ -1,0 +1,84 @@
+// LoginForm.tsx
+import React, { useState } from "react";
+import "../styles/SignUpForm.css";
+
+interface LoginFormProps {
+  setIsSignup: (isSignup: boolean) => void;
+  onLoginSuccess: () => void;  // Callback for successful login
+}
+
+const LoginForm: React.FC<LoginFormProps> = ({ setIsSignup, onLoginSuccess }) => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    console.log("Login form submitted");  // Log to confirm submission
+
+    try {
+      const response = await fetch("http://localhost:5000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+      if (!response.ok) {
+        console.error("Failed to log in:", response.statusText);
+        alert(`Login failed: ${response.statusText}`);
+        return;
+      }
+
+      const data = await response.json();
+      console.log("Response data:", data);  // Log response data
+
+      if (data.success) {
+        console.log("Login successful!");  // Log success before triggering callback
+        onLoginSuccess();  // This should trigger handleLoginSuccess in App.tsx
+      } else {
+        alert(data.message || "Login failed.");
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+      alert("Error connecting to the server. Please try again later.");
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <h2>Login</h2>
+      <div>
+        <label>Email ID:</label>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+      </div>
+      <div>
+        <label>Password:</label>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+      </div>
+      <button type="submit">Login</button>
+      <p>
+        New user?{" "}
+        <a href="#" onClick={() => setIsSignup(true)}>
+          Sign Up
+        </a>
+      </p>
+    </form>
+  );
+};
+
+export default LoginForm;
