@@ -1,10 +1,8 @@
-// LoginForm.tsx
 import React, { useState } from "react";
-import "../styles/SignUpForm.css";
 
 interface LoginFormProps {
   setIsSignup: (isSignup: boolean) => void;
-  onLoginSuccess: () => void;  // Callback for successful login
+  onLoginSuccess: () => void;
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ setIsSignup, onLoginSuccess }) => {
@@ -13,8 +11,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ setIsSignup, onLoginSuccess }) =>
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    console.log("Login form submitted");  // Log to confirm submission
+    console.log("Login form submitted");
 
     try {
       const response = await fetch("http://localhost:5000/login", {
@@ -35,11 +32,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ setIsSignup, onLoginSuccess }) =>
       }
 
       const data = await response.json();
-      console.log("Response data:", data);  // Log response data
+      console.log("Response data:", data);
 
       if (data.success) {
-        console.log("Login successful!");  // Log success before triggering callback
-        onLoginSuccess();  // This should trigger handleLoginSuccess in App.tsx
+        console.log("Login successful!");
+        onLoginSuccess();  // Trigger the success callback
       } else {
         alert(data.message || "Login failed.");
       }

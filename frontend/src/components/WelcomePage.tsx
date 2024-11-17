@@ -1,8 +1,9 @@
+// WelcomePage.tsx
 import React from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate instead of useHistory
+import { useNavigate } from "react-router-dom";
 
 const WelcomePage: React.FC = () => {
-  const navigate = useNavigate(); // Replace useHistory with useNavigate
+  const navigate = useNavigate();
 
   return (
     <div className="welcome">

@@ -1,4 +1,3 @@
-// App.tsx
 import React, { useState, useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import LoginForm from "./components/LoginForm";
@@ -17,21 +16,17 @@ const App: React.FC = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
 
-  // Effect to navigate when loggedIn status changes
   useEffect(() => {
+    console.log("useEffect triggered. loggedIn state:", loggedIn); // Debugging log
     if (loggedIn) {
-      console.log("Navigating to welcome page...");
-      if (loggedIn) {
-        console.log("Navigating to welcome page...");
-        navigate("/welcome");
-      }
-      navigate("/welcome");
+      console.log("Logged in successfully, navigating to /welcome..."); // Debugging log
+      navigate("/welcome"); // Navigate to the welcome page
     }
   }, [loggedIn, navigate]);
 
   const handleLoginSuccess = () => {
-    console.log("Login successful! Updating loggedIn state...");
-    setLoggedIn(true);
+    console.log("handleLoginSuccess called. Setting loggedIn to true."); // Debugging log
+    setLoggedIn(true); // Update the loggedIn state
   };
 
   return (
@@ -39,24 +34,29 @@ const App: React.FC = () => {
       <Header />
       <Routes>
         {/* Public routes */}
-        <Route
+        <Route>
           path="/"
           element={
             isSignup ? (
               <SignUpForm setIsSignup={setIsSignup} />
             ) : (
               <LoginForm setIsSignup={setIsSignup} onLoginSuccess={handleLoginSuccess} />
+              
             )
           }
-        />
-        
+          <Route path="" element={<WelcomePage />} />
+        </Route>
+        {/* <Route path="/welcome" element={<ProtectedRoute loggedIn={loggedIn} />} >
+        <Route path="" element={<WelcomePage />} />
+        </Route> */}
+
         {/* Protected routes */}
-        <Route element={<ProtectedRoute loggedIn={loggedIn} />}>
+        {/* <Route element={<ProtectedRoute loggedIn={loggedIn} />}>
           <Route path="/welcome" element={<WelcomePage />} />
           <Route path="/creator-bible" element={<CreatorBible />} />
           <Route path="/upload-campaign" element={<UploadCampaign />} />
           <Route path="/creator-history" element={<CreatorHistory />} />
-        </Route>
+        </Route> */}
       </Routes>
       <Footer />
     </div>
