@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 interface LoginFormProps {
   setIsSignup: (isSignup: boolean) => void;
-  onLoginSuccess: () => void;
+  onLoginSuccess: (user: { full_name: string }) => void; // Accepting user object in the callback
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ setIsSignup, onLoginSuccess }) => {
@@ -31,12 +31,18 @@ const LoginForm: React.FC<LoginFormProps> = ({ setIsSignup, onLoginSuccess }) =>
         return;
       }
 
-      const data = await response.json();
+      const data = await response.json();  // Ensure this is parsed as JSON
       console.log("Response data:", data);
 
-      if (data.success) {
+      if (data.user.loggedInStatus===true) {
         console.log("Login successful!");
-        onLoginSuccess();  // Trigger the success callback
+
+        // Save user full_name in localStorage
+        localStorage.setItem("full_name", data.user.full_name); 
+        localStorage.setItem("loggedIn", "true");
+
+        // Trigger the success callback with the user data
+        onLoginSuccess(data.user); 
       } else {
         alert(data.message || "Login failed.");
       }

@@ -1,62 +1,100 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import LoginForm from "./components/LoginForm";
 import SignUpForm from "./components/SignUpForm";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import WelcomePage from "./components/WelcomePage";
-import CreatorBible from "./components/CreatorBible";
-import UploadCampaign from "./components/UploadCampaign";
-import CreatorHistory from "./components/CreatorHistory";
 import ProtectedRoute from "./components/ProtectedRoute";
 import "./App.css";
 
 const App: React.FC = () => {
   const [isSignup, setIsSignup] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(
+    localStorage.getItem("loggedIn") === "true"
+  );
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("useEffect triggered. loggedIn state:", loggedIn); // Debugging log
+    // Redirect user to the appropriate route based on login state
     if (loggedIn) {
-      console.log("Logged in successfully, navigating to /welcome..."); // Debugging log
-      navigate("/welcome"); // Navigate to the welcome page
+      console.log("User is already logged in. Redirecting to welcome page...");
+      navigate("/welcome");
     }
   }, [loggedIn, navigate]);
 
-  const handleLoginSuccess = () => {
-    console.log("handleLoginSuccess called. Setting loggedIn to true."); // Debugging log
-    setLoggedIn(true); // Update the loggedIn state
+  const handleLoginSuccess = (user: { full_name: string }) => {
+    console.log("Login successful!");
+
+    // Save user data to localStorage
+    localStorage.setItem("full_name", user.full_name);
+    localStorage.setItem("loggedIn", "true");
+
+    // Set logged-in state and navigate to welcome page
+    setLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    console.log("Logging out...");
+    // Clear localStorage and state
+    localStorage.removeItem("loggedIn");
+    localStorage.removeItem("full_name");
+    setLoggedIn(false);
+
+    // Redirect to login page
+    navigate("/");
   };
 
   return (
     <div className="App">
-      <Header />
+      {/* Pass `loggedIn` state and `handleLogout` to Header */}
+      <Header
+        loggedIn={loggedIn}
+        fullName={localStorage.getItem("full_name")}
+        onLogout={handleLogout}
+      />
       <Routes>
         {/* Public routes */}
-        <Route>
+        <Route
           path="/"
           element={
-            isSignup ? (
+            loggedIn ? (
+              <Navigate to="/welcome" replace />
+            ) : isSignup ? (
               <SignUpForm setIsSignup={setIsSignup} />
             ) : (
-              <LoginForm setIsSignup={setIsSignup} onLoginSuccess={handleLoginSuccess} />
-              
+              <LoginForm
+                setIsSignup={setIsSignup}
+                onLoginSuccess={handleLoginSuccess}
+              />
             )
           }
-          <Route path="" element={<WelcomePage />} />
-        </Route>
-        {/* <Route path="/welcome" element={<ProtectedRoute loggedIn={loggedIn} />} >
-        <Route path="" element={<WelcomePage />} />
-        </Route> */}
+        />
+        <Route
+          path="/signup"
+          element={
+            loggedIn ? (
+              <Navigate to="/welcome" replace />
+            ) : (
+              <SignUpForm setIsSignup={setIsSignup} />
+            )
+          }
+        />
 
         {/* Protected routes */}
-        {/* <Route element={<ProtectedRoute loggedIn={loggedIn} />}>
-          <Route path="/welcome" element={<WelcomePage />} />
-          <Route path="/creator-bible" element={<CreatorBible />} />
-          <Route path="/upload-campaign" element={<UploadCampaign />} />
-          <Route path="/creator-history" element={<CreatorHistory />} />
-        </Route> */}
+        <Route element={<ProtectedRoute loggedIn={loggedIn} />}>
+          <Route
+            path="/welcome"
+            element={<WelcomePage onLogout={handleLogout} />}
+          />
+        </Route>
+
+        {/* Fallback for unknown routes */}
+        <Route
+          path="*"
+          element={<Navigate to={loggedIn ? "/welcome" : "/"} replace />}
+        />
       </Routes>
       <Footer />
     </div>

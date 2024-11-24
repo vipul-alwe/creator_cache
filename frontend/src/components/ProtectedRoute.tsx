@@ -1,18 +1,16 @@
-// ProtectedRoute.tsx
 import React from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
 interface ProtectedRouteProps {
   loggedIn: boolean;
-  children: React.ReactNode; // Make sure children prop is typed correctly
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ loggedIn, children }) => {
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ loggedIn }) => {
   if (!loggedIn) {
-    return <Navigate to="/" />; // Redirect to login if not logged in
+    console.log("Access denied. Redirecting to login...");
+    return <Navigate to="/" />;
   }
-
-  return <>{children}</>; // Render children if logged in
+  return <Outlet />;
 };
 
 export default ProtectedRoute;
