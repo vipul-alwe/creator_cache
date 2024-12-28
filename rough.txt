@@ -1,0 +1,12 @@
+now create views for this that considers the user tiers.
+
+We need to carry forwards the user login and signup views from the views file I sent you earlier.
+
+The rest of the views logic will need to be changed.
+
+CSV files can be uploaded by any user.
+the approval however can only be done by users with Management or Media & Analytics as their team name.
+
+transactions can be approved or rejected. 
+
+once the transaction is approved the data gets written onto the database main table.

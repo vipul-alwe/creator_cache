@@ -70,7 +70,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ setIsSignup }) => {
       try {
         const timestamp = new Date().toISOString(); // Generate timestamp
 
-        const response = await fetch("http://localhost:5000/signup", {
+        const response = await fetch("http://localhost:8000/signup/", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
