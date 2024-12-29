@@ -51,7 +51,7 @@ const App: React.FC = () => {
       {/* Pass `loggedIn` state and `handleLogout` to Header */}
       <Header
         loggedIn={loggedIn}
-        fullName={localStorage.getItem("full_name")}
+        full_name={localStorage.getItem("full_name")}
         onLogout={handleLogout}
       />
       <Routes>

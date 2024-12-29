@@ -1,6 +1,6 @@
 import React from "react";
 import "../styles/Header.css";
-import logo from "../assets/logo.svg";
+import logo from "../assets/logos/3.png";
 import LogOutMenu from "./LogoutMenu";
 
 interface HeaderProps {
@@ -13,7 +13,6 @@ const Header: React.FC<HeaderProps> = ({ loggedIn, onLogout }) => {
     <header className="header">
       <div className="logo">
         <img src={logo} alt="Logo" />
-        <h1>Creator Cache</h1>
       </div>
       {loggedIn && (
         <div className="user-menu">

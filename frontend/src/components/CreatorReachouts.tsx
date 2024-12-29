@@ -1,7 +1,7 @@
 // CreatorHistory.tsx
 import React from "react";
 
-const CreatorHistory: React.FC = () => {
+const CreatorReachouts: React.FC = () => {
   return (
     <div className="creator-history-container">
       <h2>Creator History</h2>
@@ -18,4 +18,4 @@ const CreatorHistory: React.FC = () => {
   );
 };
 
-export default CreatorHistory;
+export default CreatorReachouts;

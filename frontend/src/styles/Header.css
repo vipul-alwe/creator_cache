@@ -1,20 +1,36 @@
-/* Header.css */
+/* Header Styling */
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 10px 20px;
-  background-color: #007bff; /* Example background color */
-  color: white;
+  background-color: #A8E6CF; /* Main color from palette */
+  color: #141414; /* Font color from palette */
+  height: 60px; /* Header height */
+  position: fixed; /* Makes it persistent */
+  top: 0; /* Fixed to the top of the viewport */
+  left: 0;
+  right: 0;
+  z-index: 1000; /* Ensures it stays on top of other content */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional shadow for better visibility */
 }
 
+/* Push Content Below Header */
+.content-container {
+  margin-top: 60px; /* Same as header height to prevent overlap */
+  padding: 20px;
+  background-color: #fafafa; /* Light background */
+}
+
+/* Logo styling */
 .logo {
   display: flex;
   align-items: center;
+  margin-top: 15px;
 }
 
 .logo img {
-  height: 100px; /* Logo size */
+  height: 250px; /* Logo size adjusted for larger header */
   margin-right: 10px; /* Space between logo and text */
 }
 
@@ -23,12 +39,132 @@
   font-weight: bold;
 }
 
+/* Logout menu container */
+.logout-menu-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 12px; /* Smaller font size */
+  color: #141414; /* Font color from palette */
+  font-weight: bold;
+  margin-top: 45px;
+  padding: 8px 12px; /* Added padding for spacing */
+  border-radius: 4px; /* Optional: Adds rounded corners */
+  z-index: 1000; /* Ensure it appears above other content */
+}
+
+/* User's name styling */
+.user-name {
+  padding: 0px 0px; /* Smaller padding */
+  background-color: #A8E6CF; /* Main color from palette */
+  border-radius: 4px;
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 0px;
+}
+
+.user-name:hover {
+  background-color: #FFB6C1; /* Accent 1 on hover */
+}
+
+/* Dropdown menu styling */
+.logout-dropdown {
+  position: absolute;
+  top: 100%; /* Align dropdown below the user name */
+  right: 0;
+  margin-top: 4px; /* Small gap between button and dropdown */
+  background-color: #FAF9F6; /* Background from palette */
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10000; /* Ensure it stays on top of the header */
+  min-width: 110px; /* Reduced width */
+  animation: fadeIn 0.2s ease-in-out;
+  overflow: visible; /* Allow the dropdown to extend outside the container */
+  display: block; /* Ensure the dropdown is shown */
+}
+
+/* Dropdown arrow (optional) */
+.logout-dropdown::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  right: 10px;
+  border-width: 0 6px 6px 6px;
+  border-style: solid;
+  border-color: transparent transparent #ddd transparent;
+}
+
+/* Dropdown items */
+.dropdown-item {
+  width: 100%;
+  padding: 6px 8px; /* Smaller padding */
+  background-color: #FAF9F6;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: 12px; /* Smaller font size */
+  color: #141414;
+  transition: background-color 0.3s;
+}
+
+.dropdown-item:hover {
+  background-color: #FFB6C1; /* Accent 1 on hover */
+}
+
+/* Fade-in animation for dropdown */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Adjustments */
 @media (max-width: 768px) {
   .logo img {
-    height: 80px; /* Smaller logo size on smaller screens */
+    height: 50px; /* Smaller logo size on smaller screens */
   }
 
   .logo h1 {
     font-size: 1.2rem; /* Adjust font size on smaller screens */
+  }
+
+  .user-name {
+    font-size: 11px;
+    padding: 3px 6px;
+  }
+
+  .logout-dropdown {
+    min-width: 100px;
+    margin-top: 2px;
+  }
+
+  .dropdown-item {
+    font-size: 11px;
+    padding: 5px 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .user-name {
+    font-size: 10px;
+    padding: 2px 4px;
+  }
+
+  .logout-dropdown {
+    right: -5px; /* Slight adjustment for smaller screens */
+    min-width: 90px;
+  }
+
+  .dropdown-item {
+    font-size: 10px;
+    padding: 4px;
   }
 }
