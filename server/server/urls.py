@@ -13,4 +13,6 @@ urlpatterns = [
     path('api/approve_transaction/<int:transaction_id>/', views.ApproveTransactionView.as_view(), name='approve_transaction'),
     path('api/reject_transaction/<int:transaction_id>/', views.RejectTransactionView.as_view(), name='reject_transaction'),
     path('api/transactions/', views.TransactionStatusView.as_view(), name='transaction_list'),
+    path('api/revert_transaction/<str:transaction_id>/', views.RevertTransactionView.as_view(), name='revert_transaction'),
+    path('vault-filter/', views.VaultFilterView.as_view(), name='vault-filter'),
 ]

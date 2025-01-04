@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.utils import timezone
 
 
 # -----------------------
@@ -69,10 +70,11 @@ class MainData(models.Model):
 # 3. Temporary CSV Data Model
 # -----------------------
 class TempCSVData(models.Model):
-    transaction_id = models.CharField(max_length=100, unique=True)
+    transaction_id = models.BigIntegerField(unique=True)
     uploaded_by = models.ForeignKey(AppUsers, on_delete=models.CASCADE)
     data = models.JSONField()  # Store CSV data as JSON temporarily
     upload_date = models.DateTimeField(auto_now_add=True)
+    campaign_name = models.CharField(max_length=255, default='NA')
 
     # Add a status field for the transaction (Pending, Approved, Rejected)
     status = models.CharField(
@@ -127,6 +129,46 @@ class TransactionLog(models.Model):
     )
     approval_date = models.DateTimeField(null=True, blank=True)
     comments = models.TextField(null=True, blank=True)
+    campaign_name = models.CharField(max_length=255, default='NA') 
 
     def __str__(self):
         return f"Transaction {self.transaction.transaction_id} - {self.status}"
+
+
+# -----------------------
+# 5. The Vault
+# -----------------------
+class Vault(models.Model):
+    # Unique Identifiers
+    ucid = models.CharField(max_length=255, null=True, blank=True, unique=True)
+    ig_handle = models.CharField(max_length=255, null=True, blank=True, unique=True)
+
+    # Creator Information (Pulled from unique identifiers)
+    creator_name = models.CharField(max_length=255)
+    channel_link = models.URLField(null=True, blank=True)
+    gender = models.CharField(max_length=50, null=True, blank=True)
+    language = models.CharField(max_length=100, null=True, blank=True)
+    genre = models.CharField(max_length=100, null=True, blank=True)
+    ig_link = models.URLField(null=True, blank=True)
+    ig_subs = models.IntegerField(null=True, blank=True)
+    pct_13_17 = models.FloatField(null=True, blank=True)
+    yt_genz_13_24 = models.FloatField(null=True, blank=True)
+    rpr = models.FloatField(null=True, blank=True)
+
+    # Most Recent Entry Details
+    contacts = models.CharField(max_length=255, null=True, blank=True)
+    contact_name = models.CharField(max_length=255, null=True, blank=True)
+    email_id = models.EmailField(null=True, blank=True)
+    median_views = models.IntegerField(null=True, blank=True)
+    campaign_name = models.CharField(max_length=255, null=True, blank=True)
+    brand_name = models.CharField(max_length=255, null=True, blank=True)
+    trend_type = models.CharField(max_length=100, null=True, blank=True)
+    last_cost = models.FloatField(null=True, blank=True)
+    last_deliverable = models.CharField(max_length=255, null=True, blank=True)
+    date_of_activation = models.DateField(null=True, blank=True)
+
+    # Metadata
+    last_updated = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"{self.creator_name} - {self.ucid or self.ig_handle}"
